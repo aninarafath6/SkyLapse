@@ -1,7 +1,6 @@
 R_DEF: Internal format may change without notice
 local
 drawable cap
-drawable ic_launcher
 drawable ic_photo
 drawable ic_shutter
 drawable ic_shutter_focused
@@ -24,6 +23,9 @@ id view_finder
 layout activity_camera
 layout activity_view_finder
 layout fragment_camera
+mipmap ic_launcher
+mipmap ic_launcher_adaptive_back
+mipmap ic_launcher_adaptive_fore
 navigation nav_graph
 string app_name
 string capture

@@ -133,7 +133,7 @@ MERGED from [com.github.bumptech.glide:gifdecoder:4.11.0] /Users/aninarafath/.gr
 	tools:ignore
 		ADDED from /Users/aninarafath/Desktop/Camera2Basic/app/src/main/AndroidManifest.xml:17:9-48
 	android:icon
-		ADDED from /Users/aninarafath/Desktop/Camera2Basic/app/src/main/AndroidManifest.xml:15:9-45
+		ADDED from /Users/aninarafath/Desktop/Camera2Basic/app/src/main/AndroidManifest.xml:15:9-43
 	android:allowBackup
 		ADDED from /Users/aninarafath/Desktop/Camera2Basic/app/src/main/AndroidManifest.xml:13:9-35
 activity#views.ViewFinderActivity
