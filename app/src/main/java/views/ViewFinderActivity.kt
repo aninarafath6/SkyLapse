@@ -8,20 +8,25 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModel
 import com.example.android.camera2.basic.R
+import com.example.android.camera2.basic.databinding.ActivityViewFinderBinding
 import view_model.CamaraViewModel
 
 class ViewFinderActivity : AppCompatActivity() {
     private val vm: CamaraViewModel by viewModels()
+    private lateinit var binding: ActivityViewFinderBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vm.init(this)
+        binding = ActivityViewFinderBinding.inflate(layoutInflater)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_view_finder)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        setContentView(binding.root)
+        vm.init(this,binding.viewFinder)
     }
 }
+
+
+//ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+//    val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+//    v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+//    insets
+//}
