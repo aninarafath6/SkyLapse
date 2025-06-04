@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "com.example.android.camera2.basic.app-mergeReleaseResources-51:/layout/activity_camera.xml",
+        "source": "com.example.android.camera2.basic.app-main-53:/layout/activity_camera.xml"
+    },
+    {
+        "merged": "com.example.android.camera2.basic.app-mergeReleaseResources-51:/layout/fragment_camera.xml",
+        "source": "com.example.android.camera2.basic.app-main-53:/layout/fragment_camera.xml"
+    }
+]

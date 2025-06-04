@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/aninarafath/.gradle/daemon/8.7/com.example.android.camera2.basic.app-mergeDebugResources-52:/layout/activity_camera.xml",
+        "source": "/Users/aninarafath/.gradle/daemon/8.7/com.example.android.camera2.basic.app-main-55:/layout/activity_camera.xml"
+    },
+    {
+        "merged": "/Users/aninarafath/.gradle/daemon/8.7/com.example.android.camera2.basic.app-mergeDebugResources-52:/layout/fragment_camera.xml",
+        "source": "/Users/aninarafath/.gradle/daemon/8.7/com.example.android.camera2.basic.app-main-55:/layout/fragment_camera.xml"
+    },
+    {
+        "merged": "com.example.android.camera2.basic.app-mergeDebugResources-52:/layout/activity_view_finder.xml",
+        "source": "com.example.android.camera2.basic.app-main-55:/layout/activity_view_finder.xml"
+    },
+    {
+        "merged": "/Users/aninarafath/.gradle/daemon/8.7/com.example.android.camera2.basic.app-mergeDebugResources-52:/layout/activity_view_finder.xml",
+        "source": "/Users/aninarafath/.gradle/daemon/8.7/com.example.android.camera2.basic.app-main-55:/layout/activity_view_finder.xml"
+    }
+]
