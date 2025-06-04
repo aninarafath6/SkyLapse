@@ -47,7 +47,7 @@
 
     <fragment
         android:id="@+id/camera_fragment"
-        android:name="com.example.android.camera2.basic.fragments.CameraFragment"
+        android:name="views.CameraFragment"
         android:label="Camera" >
 
         <argument

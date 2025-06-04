@@ -16,7 +16,8 @@
         android:label="@string/app_name"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name="views.ViewFinderActivity"
+            android:name=".CameraActivity"
+            android:clearTaskOnLaunch="true"
             android:exported="true"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -24,10 +25,5 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".CameraActivity"
-            android:clearTaskOnLaunch="true"
-            android:exported="false"
-            android:theme="@style/AppTheme" />
     </application>
 </manifest>
