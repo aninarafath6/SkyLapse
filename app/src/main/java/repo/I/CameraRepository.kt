@@ -1,6 +1,8 @@
 package repo.I
+
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraDevice
+import android.hardware.camera2.CameraManager
 import android.hardware.camera2.CaptureRequest
 import android.view.Surface
 import model.CameraCapabilities
@@ -35,4 +37,7 @@ interface CameraRepository {
         surface: Surface,
         settings: CameraSettings
     ): CaptureRequest
+
+    fun getCameraManager(): CameraManager
+
 }

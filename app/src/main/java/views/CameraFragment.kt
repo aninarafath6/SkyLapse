@@ -20,6 +20,7 @@ import view_model.CameraViewModelFactory
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.fragment.app.Fragment
+import com.example.android.camera.utils.getPreviewOutputSize
 import com.example.android.camera2.basic.R
 
 class CameraFragment : Fragment() {
@@ -55,7 +56,7 @@ class CameraFragment : Fragment() {
         val cameraManager =
             requireContext().getSystemService(Context.CAMERA_SERVICE) as CameraManager
         val repository = CameraRepositoryImpl(requireContext(), cameraManager)
-        val factory = CameraViewModelFactory(repository, args.cameraId)
+        val factory = CameraViewModelFactory(repository, args.cameraId, args.pixelFormat)
         viewModel = ViewModelProvider(this, factory)[CameraViewModel::class.java]
     }
 
@@ -77,7 +78,21 @@ class CameraFragment : Fragment() {
             ) = Unit
 
             override fun surfaceCreated(holder: SurfaceHolder) {
+
+                val cameraManager =
+                    requireContext().getSystemService(Context.CAMERA_SERVICE) as CameraManager
+                val characteristics = cameraManager.getCameraCharacteristics(args.cameraId)
+                val previewSize = getPreviewOutputSize(
+                    binding.viewFinder.display,
+                    characteristics,
+                    SurfaceHolder::class.java
+                )
+
+                binding.viewFinder.setAspectRatio(previewSize.width, previewSize.height)
+
+                viewModel.setPreviewSurface(holder.surface)
                 viewModel.handleEvent(CameraEvent.InitializeCamera)
+                viewModel.handleEvent(CameraEvent.SetShutterSpeed(1000))
             }
         })
     }

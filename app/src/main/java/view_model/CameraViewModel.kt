@@ -1,9 +1,11 @@
 package view_model
 
 import android.hardware.camera2.CameraCaptureSession
+import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraDevice
 import android.media.ImageReader
 import android.util.Log
+import android.view.Surface
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,7 +20,8 @@ import repo.I.CameraRepository
 
 class CameraViewModel(
     private val repository: CameraRepository,
-    private val cameraId: String
+    private val cameraId: String,
+    private val pixelFormat: Int
 ) : ViewModel() {
 
     private val _cameraState = MutableLiveData(CameraState())
@@ -33,6 +36,12 @@ class CameraViewModel(
     private var camera: CameraDevice? = null
     private var captureSession: CameraCaptureSession? = null
     private var imageReader: ImageReader? = null
+    private var previewSurface: Surface? = null
+
+
+    companion object {
+        private const val IMAGE_BUFFER_SIZE = 3
+    }
 
     init {
         loadCameraCapabilities()
@@ -55,18 +64,56 @@ class CameraViewModel(
     }
 
     private fun initializeCamera() {
+        val surface = previewSurface ?: return
+
         viewModelScope.launch {
             try {
                 _cameraState.value = _cameraState.value?.copy(isInitialized = false, error = null)
 
                 camera = repository.openCamera(cameraId)
-                // Setup ImageReader and capture session
-                // This would need to be adapted based on your surface requirements
+                val cameraManager = repository.getCameraManager()
+                val characteristics = cameraManager.getCameraCharacteristics(cameraId)
+                val size =
+                    characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)!!
+                        .getOutputSizes(pixelFormat)
+                        .maxByOrNull { it.height * it.width }!!
+                imageReader = ImageReader.newInstance(
+                    size.width,
+                    size.height,
+                    pixelFormat,
+                    IMAGE_BUFFER_SIZE
+                )
+
+                // Create capture session with both preview surface and image reader surface
+                val targets = listOf(surface, imageReader!!.surface)
+                captureSession = repository.createCaptureSession(camera!!, targets)
+
+                // Start preview
+                startPreview()
+
 
                 _cameraState.value = _cameraState.value?.copy(isInitialized = true)
             } catch (e: Exception) {
                 _cameraState.value = _cameraState.value?.copy(error = e.message)
                 Log.e("CameraViewModel", "Failed to initialize camera", e)
+            }
+        }
+    }
+
+    private fun startPreview() {
+        val currentCamera = camera ?: return
+        val currentSession = captureSession ?: return
+        val surface = previewSurface ?: return
+        val settings = _cameraSettings.value ?: CameraSettings()
+
+        viewModelScope.launch {
+            try {
+                val previewRequest =
+                    repository.createPreviewRequest(currentCamera, surface, settings)
+                currentSession.setRepeatingRequest(previewRequest, null, null)
+            } catch (e: Exception) {
+                _cameraState.value = _cameraState.value?.copy(error = e.message)
+                Log.e("CameraViewModel", "Failed to start preview", e)
             }
         }
     }
@@ -156,18 +203,22 @@ class CameraViewModel(
     private fun updatePreview() {
         val currentCamera = camera ?: return
         val currentSession = captureSession ?: return
+        val surface = previewSurface ?: return
         val settings = _cameraSettings.value ?: CameraSettings()
 
         viewModelScope.launch {
             try {
-                // This would need the preview surface from the Fragment
-                // You might need to pass this as a parameter or handle differently
-                // val previewRequest = repository.createPreviewRequest(currentCamera, previewSurface, settings)
-                // currentSession.setRepeatingRequest(previewRequest, null, null)
+                val previewRequest = repository.createPreviewRequest(currentCamera, surface, settings)
+                currentSession.setRepeatingRequest(previewRequest, null, null)
             } catch (e: Exception) {
                 Log.e("CameraViewModel", "Failed to update preview", e)
+                _cameraState.value = _cameraState.value?.copy(error = e.message)
             }
         }
+    }
+
+    fun setPreviewSurface(surface: Surface) {
+        previewSurface = surface
     }
 
     override fun onCleared() {

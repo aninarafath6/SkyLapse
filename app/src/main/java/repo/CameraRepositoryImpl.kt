@@ -93,8 +93,7 @@ class CameraRepositoryImpl(
                 request: CaptureRequest,
                 result: TotalCaptureResult
             ) {
-                // Handle capture completion and image processing
-                // Return CombinedCaptureResult
+
             }
         }, cameraHandler)
     }
@@ -171,6 +170,10 @@ class CameraRepositoryImpl(
         builder.addTarget(surface)
         applyManualSettings(builder, settings)
         return builder.build()
+    }
+
+    override fun getCameraManager(): CameraManager {
+        return cameraManager
     }
 
     private fun applyManualSettings(builder: CaptureRequest.Builder, settings: CameraSettings) {
